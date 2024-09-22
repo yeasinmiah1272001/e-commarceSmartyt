@@ -1,13 +1,17 @@
 "use client";
-import { signIn } from "next-auth/react";
+import { resetOrder } from "@/Redux/shoppingSlice";
+import { loadStripe } from "@stripe/stripe-js";
+import { signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const PaymentForm = () => {
   // @ts-ignore
   const selector = useSelector((state) => state.shopping.productData);
- // @ts-ignore
+  const disPatch = useDispatch();
+  // @ts-ignore
   const userInfo = useSelector((state) => state.shopping.userInfo);
+  const { data: session } = useSession();
 
   const [amount, setAmount] = useState(0);
 
@@ -20,6 +24,33 @@ const PaymentForm = () => {
     });
     setAmount(amt);
   }, [selector]);
+
+  const stripePromise = loadStripe(
+    "pk_test_51Q0No1EEbpdUnWbPHGZQnsQCNQ6ojL9kMfJkqNCnU2Kj0cfMbFhAhMoAIauHAMH5Fj4O4nf84Qy8SSa00tvuMNdH00Z1XfiXY2"
+  );
+  const handleCheakout = async () => {
+    const stripe = await stripePromise;
+    const response = await fetch("/api/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        item: selector,
+        email: session?.user?.email,
+      }),
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      stripe?.redirectToCheckout({ sessionId: data.id });
+      disPatch(resetOrder());
+    } else {
+      throw new Error("failed payment");
+    }
+
+    // console.log("res", await response.json())
+  };
 
   return (
     <section className="bg-white p-6 rounded-lg shadow-md lg:w-full mx-auto">
@@ -42,15 +73,21 @@ const PaymentForm = () => {
         {userInfo ? (
           <>
             {" "}
-            <button className="w-full px-6 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300 shadow-md">
+            <button
+              onClick={handleCheakout}
+              className="w-full px-6 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300 shadow-md"
+            >
               Proceed to Payment
             </button>
           </>
         ) : (
           <>
             {" "}
-            <button onClick={() => signIn()} className="w-full animate-bounce px-6 py-3 bg-red-500 text-white rounded-md hover:bg-blue-600 transition duration-300 shadow-md">
-             Pleace Login
+            <button
+              onClick={() => signIn()}
+              className="w-full animate-bounce px-6 py-3 bg-red-500 text-white rounded-md hover:bg-blue-600 transition duration-300 shadow-md"
+            >
+              Pleace Login
             </button>
           </>
         )}

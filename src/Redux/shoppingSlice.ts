@@ -67,6 +67,25 @@ export const shoppingSlice = createSlice({
     deleteUser: (state) => {
       state.userInfo = null;
     },
+
+
+    addOrder: (state, action) => {
+      const existingOrder = state.orderData.find(
+        (item) => item._id === action.payload._id
+      );
+      if (existingOrder) {
+        state.orderData.push(action.payload);
+      } else {
+        state.orderData = action.payload;
+      }
+    },
+
+    resetOrder: (state) => {
+      state.orderData = [];
+    },
+
+
+
   },
 });
 
@@ -78,6 +97,9 @@ export const {
   resetData,
   addUser,
   deleteUser,
+  addOrder,
+  resetOrder
+
 } = shoppingSlice.actions;
 
 export default shoppingSlice.reducer;
