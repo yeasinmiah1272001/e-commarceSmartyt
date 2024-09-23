@@ -1,15 +1,20 @@
 "use client";
-import { decreaseQuantity, deleteProduct, increaseQuantity } from "@/Redux/shoppingSlice";
+import {
+  decreaseQuantity,
+  deleteProduct,
+  increaseQuantity,
+} from "@/Redux/shoppingSlice";
 import Image from "next/image";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "@/Redux/store"; // Adjust the import path as needed
+import { RootState, AppDispatch } from "@/Redux/store";
 import { Products } from "../../type";
 
 const CartItem = () => {
-  
-  const products = useSelector((state: RootState) => state.shopping.productData);
+  const products = useSelector(
+    (state: RootState) => state.shopping.productData
+  );
 
   const dispatch = useDispatch<AppDispatch>();
 
