@@ -48,8 +48,6 @@ const PaymentForm = () => {
     } else {
       throw new Error("failed payment");
     }
-
-    // console.log("res", await response.json())
   };
 
   return (
