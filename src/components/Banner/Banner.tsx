@@ -7,7 +7,6 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-// Define the type for Arrow props
 interface ArrowProps {
   onClick?: () => void;
 }
@@ -49,11 +48,11 @@ const Banner = () => {
         {[img1, img2, img3].map((image, index) => (
           <div key={index} className="relative">
             <div className="relative w-full h-[450px]">
-              <Image 
-                src={image} 
-                alt={`banner ${index + 1}`} 
-                fill 
-                className="object-cover shadow-lg" 
+              <Image
+                src={image}
+                alt={`banner ${index + 1}`}
+                fill
+                className="object-cover shadow-lg"
               />
             </div>
             <div className="absolute inset-0 flex flex-col justify-center items-start p-4 md:p-6 lg:p-8 text-white bg-gradient-to-t from-black via-transparent to-transparent">
@@ -62,7 +61,8 @@ const Banner = () => {
                   Outware picks
                 </h1>
                 <p className="text-xs md:text-sm lg:text-base xl:text-lg font-medium mb-4 hidden sm:block">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum <br /> voluptate consequuntur, odio facilis
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum{" "}
+                  <br /> voluptate consequuntur, odio facilis
                 </p>
                 <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4  sm:flex">
                   <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300">
