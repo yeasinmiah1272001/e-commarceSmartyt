@@ -7,10 +7,10 @@ import { Products as ProductType } from "../../../type";
 
 const Products = async () => {
   const products = await getProducts();
-  
+
   return (
     <Container>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
         {products.map((item: ProductType) => (
           <ProductsData key={item._id} item={item} />
         ))}
